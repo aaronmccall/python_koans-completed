@@ -32,10 +32,36 @@ from runner.koan import *
 # More scoring examples are given in the tests below:
 #
 # Your goal is to write the score method.
+def get_ones(dice):
+    return len(filter(lambda x: x == 1, dice))
+
+
+def get_fives(dice):
+    return len(filter(lambda x: x == 5, dice))
+
 
 def score(dice):
-    # You need to write this method
-    pass
+    total = 0
+    ones = get_ones(dice)
+    fives = get_fives(dice)
+
+    total += (1000 + (100 * (ones % 3)) if ones >= 3 else 100 * ones)
+    total += (500 + (50 * (fives % 3)) if fives >= 3 else 50 * fives)
+
+    if ones + fives == len(dice):
+        return total
+
+    counts = {}.fromkeys(dice, 0)
+
+    for die in dice:
+        if (die is not 1 and die is not 5):
+            counts[die] += 1
+
+    for die in counts.keys():
+        if counts[die] >= 3:
+            total += die * 100
+
+    return total
 
 
 class AboutScoringProject(Koan):
